@@ -1,0 +1,78 @@
+  ////// HTML /////////
+  <table class="table align-items-center table-dark table-flush">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Sl</th>
+                            <th>Company Name</th>
+                            <th>Username</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>Default Price</th>
+                            <th>Balance/Credit</th>
+                            <th>Masking Name (Case Sensetive):</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="list">
+                                <tr v-for="(item , index) in items.data">
+                                   <td>@{{(pagination.current_page * items.per_page) + index}}</td>
+                                   <td>@{{item.name}}</td>
+                                   <td>@{{item.username}}</td>
+                                   <td>@{{item.address}}</td>
+                                   <td>@{{item.mobile}}</td>
+                                   <td>৳ @{{item.sms_price}}</td>
+                                   <td>৳ @{{item.balance}}</td>
+                                   <td>@{{item.masking_name}}</td>
+                                    <td>
+                                        <a href="" class="btn btn-primary btn-sm">View</a>
+                                    </td>
+                                </tr>
+
+                        </tbody>
+                    </table>
+                    ////// script /////////
+                    <script>
+        var app = new Vue({
+           el: '#app',
+           data:{
+               dataInput: {},
+               pagination : [],
+               items : []
+           },
+            beforeMount() {
+                this.getVueItems();
+            },
+            methods: {
+                getVueItems(pagNo = 1){
+                    var page = 'clients?page='+pagNo;
+                   axios.get(page).then(function (res) {
+                       app.items = res.data;
+                       app.pagination = res.data;
+                   })
+                },
+            },
+            computed: {
+                links() {
+                    var arr = [];
+                    var i;
+                    for (i = 1; i <= this.pagination.last_page; i++) {
+                        arr.push(i);
+                    }
+                    return arr;
+                }
+            }
+        });
+    </script>
+    
+    
+    ////// controller /////////
+     public function viewClient(){
+        if(\request()->expectsJson()){
+            return User::latest()->where('status', 1)->paginate(15);
+        }else{
+            $data['pt'] = 'Client\'s List';
+            return view('admin.user_manage.manage',$data);
+        }
+    }
+     ////// route /////////
+    Route::get('clients','AdminController@viewClient')->name('admin.client.manage');
