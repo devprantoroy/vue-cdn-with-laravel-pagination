@@ -15,7 +15,7 @@
                         </thead>
                         <tbody class="list">
                                 <tr v-for="(item , index) in items.data">
-                                   <td>@{{(pagination.current_page * items.per_page) + index}}</td>
+                                  <td>@{{(pagination.current_page - 1) * pagination.per_page + index +1}}</td>
                                    <td>@{{item.name}}</td>
                                    <td>@{{item.username}}</td>
                                    <td>@{{item.address}}</td>
@@ -76,3 +76,6 @@
     }
      ////// route /////////
     Route::get('clients','AdminController@viewClient')->name('admin.client.manage');
+    
+    ////// creared by MUTASIM BILLAH /////////
+    https://www.facebook.com/wake.up.to.dreams
