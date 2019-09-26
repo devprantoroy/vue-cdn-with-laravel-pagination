@@ -30,7 +30,49 @@
 
                         </tbody>
                     </table>
+                    
+                    
+                    
+                    
+                    
+                     <nav aria-label="Page navigation" class="d-flex justify-content-center"
+                             v-if="pagination.per_page < pagination.total">
+                            <ul class="pagination">
+                                <li class="page-item" :class="{ disabled: pagination.current_page == 1 }"><a
+                                        class="page-link" @click.prevent="getVueItems(pagination.current_page -1)" v-cloak>«</a></li>
+                                <li class="page-item" v-for="(link, index) in links"
+                                    :class="{ active: link == pagination.current_page }" v-if="(pagination.current_page < 7 && index < 8) || (pagination.current_page > 6  && index <  2)">
+                                    <a class="page-link" href="#" @click.prevent="getVueItems(link)" v-cloak>@{{ link }}</a>
+                                </li>
+                                <li class="page-item disabled" :class="{ active: link == pagination.current_page }" aria-disabled="true" v-if="links.length > 10">
+                                    <span class="page-link">...</span>
+                                </li>
+                                <li class="page-item" v-for="link in links"
+                                    :class="{ active: link == pagination.current_page }" v-if="(pagination.current_page > 6 && pagination.current_page <= links.length - 6) && (link >= pagination.current_page - 3 && link <= pagination.current_page + 3)">
+                                    <a class="page-link" href="#" @click.prevent="getVueItems(link)" v-cloak>@{{ link }}</a>
+                                </li>
+                                <li class="page-item disabled"
+                                    :class="{ active: link == pagination.current_page }" aria-disabled="true" v-if="links.length > 10 && pagination.current_page > 6 && pagination.current_page <= links.length - 6">
+                                    <span class="page-link">...</span>
+                                </li>
+                                <li class="page-item" v-for="(link, index) in links"
+                                    :class="{ active: link == pagination.current_page }" v-if="(pagination.current_page < 7 && pagination.current_page <= links.length - 6 && links.length <= 6 && index > (links.length - 3)) || (pagination.current_page < 7  && links.length > 6 && index > (links.length - 3)) || (pagination.current_page >= 7 && pagination.current_page > links.length - 6 && index > (links.length - 9)) || (pagination.current_page > 6 && pagination.current_page <= links.length - 6 && index >  links.length - 3)">
+                                    <a class="page-link" href="#" @click.prevent="getVueItems(link)" v-cloak>@{{ link }}</a>
+                                </li>
+                                <li class="page-item"
+                                    :class="{ disabled: pagination.current_page == pagination.last_page }"><a
+                                        class="page-link" @click.prevent="getVueItems(pagination.current_page+1)" v-cloak>»</a></li>
+                            </ul>
+                        </nav>
+                    
+                    
+                    
+                    
+                    
+                    
                     ////// script /////////
+                    
+                    
                     <script>
         var app = new Vue({
            el: '#app',
